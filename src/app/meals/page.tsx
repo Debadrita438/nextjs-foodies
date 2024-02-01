@@ -1,15 +1,23 @@
 import Link from 'next/link';
 
+import styles from './page.module.css';
+
 export default function Meals() {
   return (
-    <main>
-      <h1>Welcome to Meals List</h1>
-      <p style={{width: '60%'}}>
-        <Link href={'/meals/chowmin'}>Chowmin</Link>
-      </p>
-      <p style={{width: '60%'}}>
-        <Link href={'/meals/burger'}>Burger</Link>
-      </p>
-    </main>
+    <>
+      <header className={styles.header}>
+        <h1>
+          Delicious meals, created{' '}
+          <span className={styles.highlight}>by you</span>
+        </h1>
+        <p>
+          Choose your favorite recipe and cook it yourself. It is easy and fun.
+        </p>
+        <p className={styles.cta}>
+          <Link href={'/meals/share'}>Share Your Favorite Recipe</Link>
+        </p>
+      </header>
+      <main className={styles.main}></main>
+    </>
   );
 }
