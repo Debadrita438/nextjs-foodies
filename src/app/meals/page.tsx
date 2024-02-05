@@ -1,6 +1,15 @@
+import {Suspense} from 'react';
 import Link from 'next/link';
 
 import styles from './page.module.css';
+import MealsGrid from '@/components/meals/meals-grid';
+import {getMeals} from '@/backend/meals';
+
+function FetchMealList() {
+  const getMealList = getMeals();
+
+  return <MealsGrid mealList={getMealList} />;
+}
 
 export default function Meals() {
   return (
@@ -17,7 +26,13 @@ export default function Meals() {
           <Link href={'/meals/share'}>Share Your Favorite Recipe</Link>
         </p>
       </header>
-      <main className={styles.main}></main>
+      <main className={styles.main}>
+        <Suspense
+          fallback={<p className={styles.loading}>Fetching meals...</p>}
+        >
+          <FetchMealList />
+        </Suspense>
+      </main>
     </>
   );
 }
