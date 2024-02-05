@@ -1,13 +1,12 @@
-import Link from 'next/link';
+import styles from './page.module.css';
 
 export default function MealDetails({params}: {params: {slug: string}}) {
   return (
-    <main>
-      <h1>meal details</h1>
-      <p>{params.slug}</p>
-      <p>
-        <Link href={'/meals/share'}>Share</Link>
-      </p>
-    </main>
+    <>
+      <header className={styles.header}>
+        <div className={styles.image}>{/* image */}</div>
+      </header>
+      <main></main>
+    </>
   );
 }
