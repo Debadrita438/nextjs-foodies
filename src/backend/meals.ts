@@ -12,5 +12,20 @@ export function getMeals() {
     summary: string;
     creator: string;
     slug: string;
+    email: string;
+    instructions: string;
   }[];
+}
+
+export function getSelectedMeal(mealSlug: string) {
+  return db.prepare('SELECT * FROM meals WHERE slug = ?').get(mealSlug) as {
+    image: string;
+    id: string;
+    title: string;
+    summary: string;
+    creator: string;
+    slug: string;
+    email: string;
+    instructions: string;
+  };
 }
