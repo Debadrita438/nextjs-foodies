@@ -6,13 +6,13 @@ import fs from 'node:fs';
 const db = sql('meals.db');
 
 interface IMeal {
-  image: {[key: string]: any};
-  id: string;
+  image: any;
+  id?: string;
   title: string;
   summary: string;
   creator: string;
   slug: string;
-  email: string;
+  creator_email: string;
   instructions: string;
 }
 
@@ -23,16 +23,9 @@ export function getMeals() {
 }
 
 export function getSelectedMeal(mealSlug: string) {
-  return db.prepare('SELECT * FROM meals WHERE slug = ?').get(mealSlug) as {
-    image: string;
-    id: string;
-    title: string;
-    summary: string;
-    creator: string;
-    slug: string;
-    email: string;
-    instructions: string;
-  };
+  return db
+    .prepare('SELECT * FROM meals WHERE slug = ?')
+    .get(mealSlug) as IMeal;
 }
 
 export const saveMeal = async (meal: IMeal) => {
@@ -45,5 +38,27 @@ export const saveMeal = async (meal: IMeal) => {
   const stream = fs.createWriteStream(`public/images/${fileName}`);
   const bufferedImage = await (meal.image as any).arrayBuffer();
 
-  stream.write(Buffer.from(bufferedImage), () => {});
+  stream.write(Buffer.from(bufferedImage), error => {
+    if (error) {
+      throw new Error('Saving image failed!');
+    }
+  });
+
+  meal.image = `/images/${fileName}`;
+
+  db.prepare(
+    `
+    INSERT INTO meals 
+      (title, summary, instructions, creator, creator_email, image, slug) 
+    VALUES (
+      @title,
+      @summary,
+      @instructions,
+      @creator,
+      @creator_email,
+      @image,
+      @slug
+    )
+  `,
+  ).run(meal);
 };
