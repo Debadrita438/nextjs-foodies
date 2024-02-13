@@ -3,12 +3,16 @@
 import {redirect} from 'next/navigation';
 
 import {saveMeal} from './meals';
+import {revalidatePath} from 'next/cache';
 
 const isInvalidText = (label: string) => {
   return !label || label.trim() === '';
 };
 
-export const shareMeal = async (formData: FormData) => {
+export const shareMeal = async (
+  prevState: {message: string},
+  formData: FormData,
+) => {
   const meal = {
     title: formData.get('title') as string,
     creator: formData.get('name') as string,
@@ -29,7 +33,11 @@ export const shareMeal = async (formData: FormData) => {
     !meal.image ||
     meal.image.size === 0
   ) {
+    return {
+      message: 'Invalid input.',
+    };
   }
   await saveMeal(meal);
+  revalidatePath('/meals');
   redirect('/meals');
 };

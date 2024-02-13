@@ -7,7 +7,17 @@ const db = sql('meals.db');
 
 interface IMeal {
   image: any;
-  id?: string;
+  id: string;
+  title: string;
+  summary: string;
+  creator: string;
+  slug: string;
+  creator_email: string;
+  instructions: string;
+}
+
+interface ISaveMeal {
+  image: any;
   title: string;
   summary: string;
   creator: string;
@@ -28,7 +38,7 @@ export function getSelectedMeal(mealSlug: string) {
     .get(mealSlug) as IMeal;
 }
 
-export const saveMeal = async (meal: IMeal) => {
+export const saveMeal = async (meal: ISaveMeal) => {
   meal.slug = slugify(meal.title, {lower: true});
   meal.instructions = xss(meal.instructions);
 

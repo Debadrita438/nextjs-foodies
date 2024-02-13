@@ -3,12 +3,14 @@ import styles from './meals-grid.module.css';
 
 interface IMealsGridProps {
   mealList: {
-    image: string;
+    image: any;
     id: string;
     title: string;
     summary: string;
     creator: string;
     slug: string;
+    creator_email: string;
+    instructions: string;
   }[];
 }
 
