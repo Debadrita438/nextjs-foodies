@@ -1,9 +1,15 @@
 import {Suspense} from 'react';
 import Link from 'next/link';
+import {Metadata} from 'next';
 
 import styles from './page.module.css';
 import MealsGrid from '@/components/meals/meals-grid';
 import {getMeals} from '@/backend/meals';
+
+export const metadata: Metadata = {
+  title: 'All Meals',
+  description: 'Browse the delicious meals shared by our vibrant community.',
+};
 
 function FetchMealList() {
   const getMealList = getMeals();

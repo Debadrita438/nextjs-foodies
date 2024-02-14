@@ -4,6 +4,19 @@ import {notFound} from 'next/navigation';
 import styles from './page.module.css';
 import {getSelectedMeal} from '@/backend/meals';
 
+export const generateMetadata = async ({params}: {params: {slug: string}}) => {
+  const meal = getSelectedMeal(params.slug);
+
+  if (!meal) {
+    notFound();
+  }
+
+  return {
+    title: meal.title,
+    description: meal.summary,
+  };
+};
+
 export default function MealDetails({params}: {params: {slug: string}}) {
   const meal = getSelectedMeal(params.slug);
 
